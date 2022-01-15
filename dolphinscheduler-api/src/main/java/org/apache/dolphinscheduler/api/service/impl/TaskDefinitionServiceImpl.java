@@ -137,7 +137,7 @@ public class TaskDefinitionServiceImpl extends BaseServiceImpl implements TaskDe
                 return result;
             }
         }
-        int saveTaskResult = processService.saveTaskDefine(loginUser, projectCode, taskDefinitionLogs, Boolean.TRUE);
+        int saveTaskResult = processService.saveTaskDefine(loginUser, projectCode, taskDefinitionLogs);
         if (saveTaskResult == Constants.DEFINITION_FAILURE) {
             putMsg(result, Status.CREATE_TASK_DEFINITION_ERROR);
             throw new ServiceException(Status.CREATE_TASK_DEFINITION_ERROR);
@@ -230,13 +230,13 @@ public class TaskDefinitionServiceImpl extends BaseServiceImpl implements TaskDe
                 processTaskRelationLogList.addAll(processTaskRelationList.stream().map(ProcessTaskRelationLog::new).collect(Collectors.toList()));
             }
             int insertResult = processService.saveTaskRelation(loginUser, projectCode, processDefinition.getCode(), processDefinition.getVersion(),
-                processTaskRelationLogList, Lists.newArrayList(), Boolean.TRUE);
+                processTaskRelationLogList, null);
             if (insertResult != Constants.EXIT_CODE_SUCCESS) {
                 putMsg(result, Status.CREATE_PROCESS_TASK_RELATION_ERROR);
                 throw new ServiceException(Status.CREATE_PROCESS_TASK_RELATION_ERROR);
             }
         }
-        int saveTaskResult = processService.saveTaskDefine(loginUser, projectCode, Lists.newArrayList(taskDefinition), Boolean.TRUE);
+        int saveTaskResult = processService.saveTaskDefine(loginUser, projectCode, Lists.newArrayList(taskDefinition));
         if (saveTaskResult == Constants.DEFINITION_FAILURE) {
             putMsg(result, Status.CREATE_TASK_DEFINITION_ERROR);
             throw new ServiceException(Status.CREATE_TASK_DEFINITION_ERROR);

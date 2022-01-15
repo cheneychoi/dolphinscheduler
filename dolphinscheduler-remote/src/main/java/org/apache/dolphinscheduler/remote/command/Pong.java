@@ -38,7 +38,7 @@ public class Pong implements Serializable {
     private static final byte[] EMPTY_BODY_ARRAY = new byte[0];
 
     /**
-     *  pong byte buffer
+     *  ping byte buffer
      */
     private static final ByteBuf PONG_BUF;
 
@@ -53,10 +53,10 @@ public class Pong implements Serializable {
     }
 
     /**
-     *  pong content
+     *  ping content
      * @return result
      */
-    public static ByteBuf pongContent(){
+    public static ByteBuf pingContent(){
         return PONG_BUF.duplicate();
     }
 

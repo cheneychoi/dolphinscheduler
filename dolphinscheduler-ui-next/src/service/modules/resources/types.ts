@@ -90,28 +90,6 @@ interface UdfFuncReq extends UdfTypeReq, DescriptionReq {
   database?: string
 }
 
-interface ResourceFile {
-  id: number
-  pid: number
-  alias: string
-  userId: number
-  type: string
-  directory: boolean
-  fileName: string
-  fullName: string
-  description: string
-  size: number
-  updateTime: string
-}
-
-interface ResourceListRes {
-  currentPage: number
-  pageSize: number
-  start: number
-  total: number
-  totalList: ResourceFile[]
-}
-
 export {
   FileReq,
   ResourceTypeReq,
@@ -130,5 +108,4 @@ export {
   ViewResourceReq,
   ResourceIdReq,
   UdfFuncReq,
-  ResourceListRes
 }

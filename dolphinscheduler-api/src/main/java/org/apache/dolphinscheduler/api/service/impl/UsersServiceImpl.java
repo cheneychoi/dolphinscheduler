@@ -407,12 +407,6 @@ public class UsersServiceImpl extends BaseServiceImpl implements UsersService {
             putMsg(result, Status.REQUEST_PARAMS_NOT_VALID_ERROR, phone);
             return result;
         }
-
-        if (state == 0 && user.getState() != state && loginUser.getId() == user.getId()) {
-            putMsg(result, Status.NOT_ALLOW_TO_DISABLE_OWN_ACCOUNT);
-            return result;
-        }
-
         user.setPhone(phone);
         user.setQueue(queue);
         user.setState(state);
@@ -548,6 +542,11 @@ public class UsersServiceImpl extends BaseServiceImpl implements UsersService {
         Map<String, Object> result = new HashMap<>();
         result.put(Constants.STATUS, false);
 
+        //only admin can operate
+        if (check(result, !isAdmin(loginUser), Status.USER_NO_OPERATION_PERM)) {
+            return result;
+        }
+
         //check exist
         User tempUser = userMapper.selectById(userId);
         if (tempUser == null) {
@@ -568,7 +567,7 @@ public class UsersServiceImpl extends BaseServiceImpl implements UsersService {
             ProjectUser projectUser = new ProjectUser();
             projectUser.setUserId(userId);
             projectUser.setProjectId(Integer.parseInt(projectId));
-            projectUser.setPerm(Constants.AUTHORIZE_WRITABLE_PERM);
+            projectUser.setPerm(7);
             projectUser.setCreateTime(now);
             projectUser.setUpdateTime(now);
             projectUserMapper.insert(projectUser);
@@ -675,7 +674,10 @@ public class UsersServiceImpl extends BaseServiceImpl implements UsersService {
     @Transactional(rollbackFor = RuntimeException.class)
     public Map<String, Object> grantResources(User loginUser, int userId, String resourceIds) {
         Map<String, Object> result = new HashMap<>();
-
+        //only admin can operate
+        if (check(result, !isAdmin(loginUser), Status.USER_NO_OPERATION_PERM)) {
+            return result;
+        }
         User user = userMapper.selectById(userId);
         if (user == null) {
             putMsg(result, Status.USER_NOT_EXIST, userId);
@@ -770,6 +772,10 @@ public class UsersServiceImpl extends BaseServiceImpl implements UsersService {
     public Map<String, Object> grantUDFFunction(User loginUser, int userId, String udfIds) {
         Map<String, Object> result = new HashMap<>();
 
+        //only admin can operate
+        if (check(result, !isAdmin(loginUser), Status.USER_NO_OPERATION_PERM)) {
+            return result;
+        }
         User user = userMapper.selectById(userId);
         if (user == null) {
             putMsg(result, Status.USER_NOT_EXIST, userId);
@@ -789,7 +795,7 @@ public class UsersServiceImpl extends BaseServiceImpl implements UsersService {
             UDFUser udfUser = new UDFUser();
             udfUser.setUserId(userId);
             udfUser.setUdfId(Integer.parseInt(udfId));
-            udfUser.setPerm(Constants.AUTHORIZE_WRITABLE_PERM);
+            udfUser.setPerm(7);
             udfUser.setCreateTime(now);
             udfUser.setUpdateTime(now);
             udfUserMapper.insert(udfUser);
@@ -814,6 +820,10 @@ public class UsersServiceImpl extends BaseServiceImpl implements UsersService {
         Map<String, Object> result = new HashMap<>();
         result.put(Constants.STATUS, false);
 
+        //only admin can operate
+        if (check(result, !isAdmin(loginUser), Status.USER_NO_OPERATION_PERM)) {
+            return result;
+        }
         User user = userMapper.selectById(userId);
         if (user == null) {
             putMsg(result, Status.USER_NOT_EXIST, userId);
@@ -834,7 +844,7 @@ public class UsersServiceImpl extends BaseServiceImpl implements UsersService {
             DatasourceUser datasourceUser = new DatasourceUser();
             datasourceUser.setUserId(userId);
             datasourceUser.setDatasourceId(Integer.parseInt(datasourceId));
-            datasourceUser.setPerm(Constants.AUTHORIZE_WRITABLE_PERM);
+            datasourceUser.setPerm(7);
             datasourceUser.setCreateTime(now);
             datasourceUser.setUpdateTime(now);
             datasourceUserMapper.insert(datasourceUser);

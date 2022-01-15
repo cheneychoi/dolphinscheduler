@@ -59,7 +59,6 @@ import java.io.IOException;
 import java.text.MessageFormat;
 import java.util.ArrayList;
 import java.util.Arrays;
-import java.util.Collections;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.HashSet;
@@ -1131,16 +1130,12 @@ public class ResourcesServiceImpl extends BaseServiceImpl implements ResourcesSe
      */
     @Override
     public Map<String, Object> authorizeResourceTree(User loginUser, Integer userId) {
-        Map<String, Object> result = new HashMap<>();
 
-        List<Resource> resourceList;
-        if (isAdmin(loginUser)) {
-            // admin gets all resources except userId
-            resourceList = resourcesMapper.queryResourceExceptUserId(userId);
-        } else {
-            // non-admins users get their own resources
-            resourceList = resourcesMapper.queryResourceListAuthored(loginUser.getId(), -1);
+        Map<String, Object> result = new HashMap<>();
+        if (isNotAdmin(loginUser, result)) {
+            return result;
         }
+        List<Resource> resourceList = resourcesMapper.queryResourceExceptUserId(userId);
         List<ResourceComponent> list;
         if (CollectionUtils.isNotEmpty(resourceList)) {
             Visitor visitor = new ResourceTreeVisitor(resourceList);
@@ -1163,16 +1158,12 @@ public class ResourcesServiceImpl extends BaseServiceImpl implements ResourcesSe
      */
     @Override
     public Map<String, Object> unauthorizedFile(User loginUser, Integer userId) {
-        Map<String, Object> result = new HashMap<>();
 
-        List<Resource> resourceList;
-        if (isAdmin(loginUser)) {
-            // admin gets all resources except userId
-            resourceList = resourcesMapper.queryResourceExceptUserId(userId);
-        } else {
-            // non-admins users get their own resources
-            resourceList = resourcesMapper.queryResourceListAuthored(loginUser.getId(), -1);
+        Map<String, Object> result = new HashMap<>();
+        if (isNotAdmin(loginUser, result)) {
+            return result;
         }
+        List<Resource> resourceList = resourcesMapper.queryResourceExceptUserId(userId);
         List<Resource> list;
         if (resourceList != null && !resourceList.isEmpty()) {
             Set<Resource> resourceSet = new HashSet<>(resourceList);
@@ -1198,15 +1189,12 @@ public class ResourcesServiceImpl extends BaseServiceImpl implements ResourcesSe
     @Override
     public Map<String, Object> unauthorizedUDFFunction(User loginUser, Integer userId) {
         Map<String, Object> result = new HashMap<>();
-
-        List<UdfFunc> udfFuncList;
-        if (isAdmin(loginUser)) {
-            // admin gets all udfs except userId
-            udfFuncList = udfFunctionMapper.queryUdfFuncExceptUserId(userId);
-        } else {
-            // non-admins users get their own udfs
-            udfFuncList = udfFunctionMapper.selectByMap(Collections.singletonMap("user_id", loginUser.getId()));
+        //only admin can operate
+        if (isNotAdmin(loginUser, result)) {
+            return result;
         }
+
+        List<UdfFunc> udfFuncList = udfFunctionMapper.queryUdfFuncExceptUserId(userId);
         List<UdfFunc> resultList = new ArrayList<>();
         Set<UdfFunc> udfFuncSet;
         if (CollectionUtils.isNotEmpty(udfFuncList)) {
@@ -1232,7 +1220,9 @@ public class ResourcesServiceImpl extends BaseServiceImpl implements ResourcesSe
     @Override
     public Map<String, Object> authorizedUDFFunction(User loginUser, Integer userId) {
         Map<String, Object> result = new HashMap<>();
-
+        if (isNotAdmin(loginUser, result)) {
+            return result;
+        }
         List<UdfFunc> udfFuncs = udfFunctionMapper.queryAuthedUdfFunc(userId);
         result.put(Constants.DATA_LIST, udfFuncs);
         putMsg(result, Status.SUCCESS);
@@ -1249,7 +1239,9 @@ public class ResourcesServiceImpl extends BaseServiceImpl implements ResourcesSe
     @Override
     public Map<String, Object> authorizedFile(User loginUser, Integer userId) {
         Map<String, Object> result = new HashMap<>();
-
+        if (isNotAdmin(loginUser, result)) {
+            return result;
+        }
         List<Resource> authedResources = queryResourceList(userId, Constants.AUTHORIZE_WRITABLE_PERM);
         Visitor visitor = new ResourceTreeVisitor(authedResources);
         String visit = JSONUtils.toJsonString(visitor.visit(), SerializationFeature.ORDER_MAP_ENTRIES_BY_KEYS);

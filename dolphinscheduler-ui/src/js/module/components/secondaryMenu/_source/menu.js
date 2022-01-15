@@ -144,8 +144,7 @@ const menu = {
       isOpen: true,
       enabled: true,
       icon: 'el-icon-s-grid',
-      children: [],
-      classNames: 'tab-queue-manage'
+      children: []
     },
     {
       name: `${i18n.$t('Environment manage')}`,
@@ -154,8 +153,7 @@ const menu = {
       isOpen: true,
       enabled: true,
       icon: 'el-icon-setting',
-      children: [],
-      classNames: 'tab-environment-manage'
+      children: []
     },
     {
       name: `${i18n.$t('Token manage')}`,
@@ -175,8 +173,7 @@ const menu = {
       isOpen: true,
       icon: 'el-icon-document-copy',
       children: [],
-      enabled: true,
-      classNames: 'tab-file-manage'
+      enabled: true
     },
     {
       name: `${i18n.$t('UDF manage')}`,
@@ -190,15 +187,13 @@ const menu = {
           name: `${i18n.$t('Resource manage')}`,
           path: 'resource-udf',
           id: 0,
-          enabled: true,
-          classNames: 'tab-udf-resource-manage'
+          enabled: true
         },
         {
           name: `${i18n.$t('Function manage')}`,
           path: 'resource-func',
           id: 1,
-          enabled: true,
-          classNames: 'tab-function-resource-manage'
+          enabled: true
         }
       ]
     },
@@ -214,15 +209,13 @@ const menu = {
           name: `${i18n.$t('Task group option')}`,
           path: 'task-group-option',
           id: 0,
-          enabled: true,
-          classNames: 'tab-task-group-option-manage'
+          enabled: true
         },
         {
           name: `${i18n.$t('Task group queue')}`,
           path: 'task-group-queue',
           id: 1,
-          enabled: true,
-          classNames: 'tab-task-group-queue-manage'
+          enabled: true
         }
       ]
     }

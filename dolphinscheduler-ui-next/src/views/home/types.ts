@@ -21,7 +21,7 @@ interface DefinitionChartData {
 }
 
 interface StateTableData {
-  index: number
+  id: number
   number: number
   state: string
 }

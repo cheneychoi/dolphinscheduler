@@ -160,8 +160,6 @@
     </select>
 
     <select id="queryAllProject" resultType="org.apache.dolphinscheduler.dao.entity.Project">
-        select
-        <include refid="baseSql"/>
-        from t_ds_project
+        select * from t_ds_project
     </select>
 </mapper>

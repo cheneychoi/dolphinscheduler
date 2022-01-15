@@ -726,7 +726,6 @@ export default {
   WebHook: 'WebHook',
   webHook: 'WebHook',
   Keyword: 'Keyword',
-  Secret: 'Secret',
   Proxy: 'Proxy',
   receivers: 'Receivers',
   receiverCcs: 'ReceiverCcs',

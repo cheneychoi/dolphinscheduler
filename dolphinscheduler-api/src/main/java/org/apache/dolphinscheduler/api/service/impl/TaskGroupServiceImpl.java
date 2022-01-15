@@ -17,6 +17,10 @@
 
 package org.apache.dolphinscheduler.api.service.impl;
 
+import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
+import com.baomidou.mybatisplus.core.metadata.IPage;
+import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
+import org.apache.dolphinscheduler.api.dto.gantt.Task;
 import org.apache.dolphinscheduler.api.enums.Status;
 import org.apache.dolphinscheduler.api.service.TaskGroupQueueService;
 import org.apache.dolphinscheduler.api.service.TaskGroupService;
@@ -28,21 +32,16 @@ import org.apache.dolphinscheduler.dao.entity.User;
 import org.apache.dolphinscheduler.dao.mapper.TaskGroupMapper;
 import org.apache.dolphinscheduler.service.process.ProcessService;
 import org.apache.dolphinscheduler.spi.utils.StringUtils;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Service;
-
-import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
-import com.baomidou.mybatisplus.core.metadata.IPage;
-import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 
 /**
  * task Group Service
@@ -278,10 +277,6 @@ public class TaskGroupServiceImpl extends BaseServiceImpl implements TaskGroupSe
             return result;
         }
         TaskGroup taskGroup = taskGroupMapper.selectById(id);
-        if (taskGroup.getStatus() == Flag.NO.getCode()) {
-            putMsg(result, Status.TASK_GROUP_STATUS_CLOSED);
-            return result;
-        }
         taskGroup.setStatus(Flag.NO.getCode());
         taskGroupMapper.updateById(taskGroup);
         putMsg(result, Status.SUCCESS);
@@ -302,11 +297,11 @@ public class TaskGroupServiceImpl extends BaseServiceImpl implements TaskGroupSe
             return result;
         }
         TaskGroup taskGroup = taskGroupMapper.selectById(id);
-        if (taskGroup.getStatus() == Flag.YES.getCode()) {
-            putMsg(result, Status.TASK_GROUP_STATUS_OPENED);
+        if (taskGroup.getStatus() == 1) {
+            putMsg(result, Status.TASK_GROUP_STATUS_ERROR);
             return result;
         }
-        taskGroup.setStatus(Flag.YES.getCode());
+        taskGroup.setStatus(1);
         taskGroup.setUpdateTime(new Date(System.currentTimeMillis()));
         int update = taskGroupMapper.updateById(taskGroup);
         putMsg(result, Status.SUCCESS);

@@ -23,26 +23,22 @@ import styles from './index.module.scss'
 const props = {
   show: {
     type: Boolean as PropType<boolean>,
-    default: false
+    default: false,
   },
   title: {
     type: String as PropType<string>,
-    required: true
+    required: true,
   },
   cancelText: {
-    type: String as PropType<string>
-  },
-  cancelShow: {
-    type: Boolean as PropType<boolean>,
-    default: true
+    type: String as PropType<string>,
   },
   confirmText: {
-    type: String as PropType<string>
+    type: String as PropType<string>,
   },
   confirmDisabled: {
     type: Boolean as PropType<boolean>,
-    default: false
-  }
+    default: false,
+  },
 }
 
 const Modal = defineComponent({
@@ -76,11 +72,9 @@ const Modal = defineComponent({
             default: () => renderSlot($slots, 'default'),
             footer: () => (
               <div class={styles['btn-box']}>
-                {this.cancelShow && (
-                  <NButton quaternary size='small' onClick={onCancel}>
-                    {this.cancelText || t('modal.cancel')}
-                  </NButton>
-                )}
+                <NButton quaternary size='small' onClick={onCancel}>
+                  {this.cancelText || t('modal.cancel')}
+                </NButton>
                 <NButton
                   type='info'
                   size='small'
@@ -90,12 +84,12 @@ const Modal = defineComponent({
                   {this.confirmText || t('modal.confirm')}
                 </NButton>
               </div>
-            )
+            ),
           }}
         </NCard>
       </NModal>
     )
-  }
+  },
 })
 
 export default Modal

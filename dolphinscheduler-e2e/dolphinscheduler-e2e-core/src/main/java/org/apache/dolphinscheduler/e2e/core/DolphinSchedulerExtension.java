@@ -193,7 +193,7 @@ final class DolphinSchedulerExtension
             .withPull(true)
             .withTailChildContainers(true)
             .withLogConsumer("dolphinscheduler_1", outputFrame -> LOGGER.info(outputFrame.getUtf8String()))
-            .waitingFor("dolphinscheduler_1", Wait.forHealthcheck().withStartupTimeout(Duration.ofSeconds(180)));
+            .waitingFor("dolphinscheduler_1", Wait.forHealthcheck());
 
         return compose;
     }

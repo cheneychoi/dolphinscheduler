@@ -25,7 +25,6 @@ import static org.awaitility.Awaitility.await;
 
 import org.apache.dolphinscheduler.e2e.core.DolphinScheduler;
 import org.apache.dolphinscheduler.e2e.pages.LoginPage;
-import org.apache.dolphinscheduler.e2e.pages.common.NavBarPage;
 import org.apache.dolphinscheduler.e2e.pages.security.SecurityPage;
 import org.apache.dolphinscheduler.e2e.pages.security.TenantPage;
 import org.apache.dolphinscheduler.e2e.pages.security.UserPage;
@@ -55,27 +54,21 @@ class UserE2ETest {
 
     @BeforeAll
     public static void setup() {
-        TenantPage tenantPage = new LoginPage(browser)
-                .login("admin", "dolphinscheduler123")
-                .goToNav(SecurityPage.class)
-                .goToTab(TenantPage.class)
-                .create(tenant);
-
-        await().untilAsserted(() -> assertThat(tenantPage.tenantList())
-                .as("Tenant list should contain newly-created tenant")
-                .extracting(WebElement::getText)
-                .anyMatch(it -> it.contains(tenant)));
-
-        tenantPage.goToNav(SecurityPage.class)
-                .goToTab(UserPage.class);
+        new LoginPage(browser)
+            .login("admin", "dolphinscheduler123")
+            .goToNav(SecurityPage.class)
+            .goToTab(TenantPage.class)
+            .create(tenant)
+            .goToNav(SecurityPage.class)
+            .goToTab(UserPage.class);
     }
 
     @AfterAll
     public static void cleanup() {
-        new NavBarPage(browser)
-            .goToNav(SecurityPage.class)
+        new SecurityPage(browser)
             .goToTab(TenantPage.class)
-            .delete(tenant);
+            .delete(tenant)
+        ;
     }
 
     @Test

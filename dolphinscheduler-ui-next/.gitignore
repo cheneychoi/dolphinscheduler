@@ -26,4 +26,5 @@ node_modules
 dist
 dist-ssr
 
+pnpm-lock.yaml
 .pnpm-debug.log

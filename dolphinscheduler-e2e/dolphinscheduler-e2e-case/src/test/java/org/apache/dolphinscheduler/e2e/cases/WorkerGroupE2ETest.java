@@ -49,7 +49,18 @@ class WorkerGroupE2ETest {
         new LoginPage(browser)
             .login("admin", "dolphinscheduler123")
             .goToNav(SecurityPage.class)
+            .goToTab(TenantPage.class)
+            .create(tenant)
+            .goToNav(SecurityPage.class)
             .goToTab(WorkerGroupPage.class);
+    }
+
+    @AfterAll
+    public static void cleanup() {
+        new SecurityPage(browser)
+            .goToTab(TenantPage.class)
+            .delete(tenant)
+        ;
     }
 
     @Test

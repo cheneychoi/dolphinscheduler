@@ -195,7 +195,7 @@ class ProcessDefinition(Base):
         """Return param json base on self.param."""
         # Handle empty dict and None value
         if not self.param:
-            return []
+            return None
         return [
             {
                 "prop": k,

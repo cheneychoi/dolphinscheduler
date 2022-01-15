@@ -664,7 +664,7 @@ CREATE TABLE t_ds_resources (
   update_time timestamp DEFAULT NULL ,
   pid int,
   full_name varchar(64),
-  is_directory boolean DEFAULT FALSE,
+  is_directory int,
   PRIMARY KEY (id),
   CONSTRAINT t_ds_resources_un UNIQUE (full_name, type)
 ) ;

@@ -23,29 +23,27 @@ import Locales from '../locales'
 import User from '../user'
 import Theme from '../theme'
 import { useMenuClick } from './use-menuClick'
-import { useMenuStore } from '@/store/menu/menu'
 
 const Navbar = defineComponent({
   name: 'Navbar',
+  emits: ['handleMenuClick'],
   props: {
     headerMenuOptions: {
       type: Array as PropType<any>,
-      default: []
+      default: [],
     },
     localesOptions: {
       type: Array as PropType<any>,
-      default: []
+      default: [],
     },
     userDropdownOptions: {
       type: Array as PropType<any>,
-      default: []
-    }
+      default: [],
+    },
   },
-  emits: ['handleMenuClick'],
   setup(props, ctx) {
     const { handleMenuClick } = useMenuClick(ctx)
-    const menuStore = useMenuStore()
-    return { handleMenuClick, menuStore }
+    return { handleMenuClick }
   },
   render() {
     return (
@@ -53,7 +51,7 @@ const Navbar = defineComponent({
         <Logo />
         <div class={styles.nav}>
           <NMenu
-            default-value={this.menuStore.getMenuKey}
+            default-value='home'
             mode='horizontal'
             options={this.headerMenuOptions}
             onUpdateValue={this.handleMenuClick}
@@ -66,7 +64,7 @@ const Navbar = defineComponent({
         </div>
       </div>
     )
-  }
+  },
 })
 
 export default Navbar

@@ -15,8 +15,9 @@
  * limitations under the License.
  */
 
-import { defineComponent, ref, PropType } from 'vue'
-import { NLayoutSider, NMenu } from 'naive-ui'
+import { defineComponent, ref, watch, PropType } from 'vue'
+import styles from './index.module.scss'
+import { MenuOption, NLayoutSider, NMenu } from 'naive-ui'
 import { useMenuClick } from './use-menuClick'
 
 const Sidebar = defineComponent({
@@ -24,8 +25,8 @@ const Sidebar = defineComponent({
   props: {
     sideMenuOptions: {
       type: Array as PropType<any>,
-      default: []
-    }
+      default: [],
+    },
   },
   setup() {
     const collapsedRef = ref(false)
@@ -33,7 +34,7 @@ const Sidebar = defineComponent({
       'workflow',
       'udf-manage',
       'service-manage',
-      'statistical-manage'
+      'statistical-manage',
     ]
 
     const { handleMenuClick } = useMenuClick()
@@ -52,14 +53,13 @@ const Sidebar = defineComponent({
         onExpand={() => (this.collapsedRef = false)}
       >
         <NMenu
-          default-value={this.sideMenuOptions[0].key}
           options={this.sideMenuOptions}
           defaultExpandedKeys={this.defaultExpandedKeys}
           onUpdateValue={this.handleMenuClick}
         />
       </NLayoutSider>
     )
-  }
+  },
 })
 
 export default Sidebar
